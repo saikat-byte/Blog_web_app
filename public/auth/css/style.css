@@ -1,0 +1,46 @@
+.container{
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.auth_section{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+}
+
+.auth_section a{
+
+    text-decoration: none;
+}
+
+/* Tablet styles */
+@media (max-width: 768px) {
+    .auth_section {
+        width: 300px;
+    }
+
+    .card-header,
+    .card-body {
+        padding: 15px;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 480px) {
+    .auth_section {
+        width: 90%;
+    }
+
+    .card-header,
+    .card-body {
+        padding: 10px;
+    }
+
+    .card-header h3 {
+        font-size: 1.5em;
+    }
+}
