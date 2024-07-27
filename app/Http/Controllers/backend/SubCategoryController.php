@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\backend;
 
+use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\SubCategory;
 use Illuminate\Support\Str;
@@ -110,5 +111,12 @@ class SubCategoryController extends Controller
     {
         $subCategory->delete();
         return Redirect()->back()->with('success', 'sub category deletecd successfully');
+    }
+
+    public function getSubCategoryByCategoryId(int $id){
+
+        $sub_categories = SubCategory::select('id', 'sub_category_name')->where('category_id', $id)->get();
+
+        return \response()->json($sub_categories);
     }
 }
