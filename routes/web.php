@@ -4,6 +4,8 @@ use App\Http\Controllers\backend\BackendController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\frontend\FrontendController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubCategoryController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,5 +47,7 @@ Route::get('/single-post', [FrontendController::class, 'single'])->name('fronten
 Route::group(["prefix" => "dashboard"], function (){
     Route::get('/', [BackendController::class, 'index'])->name('backend.index');
     Route::resource('category', CategoryController::class);
+    Route::resource('sub-category', SubCategoryController::class);
+    Route::resource('tag', TagController::class);
 });
 

@@ -14,7 +14,7 @@
                     </div>
                 @endif
                 <div class="card-header">
-                    <h3>Update ctagory</h3>
+                    <h3>Update category</h3>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('category.update', $category) }}" method="POST">

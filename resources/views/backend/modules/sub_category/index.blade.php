@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 
-@section('page_title', 'Category')
+@section('page_title', 'Sub category')
 
 @section('page_sub_title', 'list')
 
@@ -17,7 +17,7 @@
             <div class="card-header">
                 <div class=" d-flex justify-content-between">
                     <h3>Create List</h3>
-                    <a href="{{ route('category.create') }}"> <button class="btn btn-success">Add</button> </a>
+                    <a href="{{ route('sub-category.create') }}"> <button class="btn btn-success">Add</button> </a>
                 </div>
 
             </div>
@@ -27,6 +27,7 @@
                     <thead>
                         <tr>
                             <th>Sl</th>
+                            <th>Sub category name</th>
                             <th>Category name</th>
                             <th>Slug name</th>
                             <th>Order by</th>
@@ -40,29 +41,30 @@
                         @php
                             $sl = 1;
                         @endphp
-                        @foreach($categories as $key => $category)
+                        @foreach($sub_categories as $key => $sub_category)
                         <tr>
                             <td>{{ $sl++ }}</td>
-                            <td>{{ $category->category_name }}</td>
-                            <td>{{ $category->slug_name}}</td>
-                            <td>{{ $category->order_by }}</td>
-                            <td>{{ $category->status }}</td>
-                            <td>{{ \Carbon\Carbon::parse($category->created_at)->format('d-m-Y') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($category->updated_at)->format('d-m-Y') }}</td>
+                            <td>{{ $sub_category->sub_category_name }}</td>
+                            <td>{{ $sub_category->category->category_name }}</td>
+                            <td>{{ $sub_category->slug_name}}</td>
+                            <td>{{ $sub_category->order_by }}</td>
+                            <td>{{ $sub_category->status }}</td>
+                            <td>{{ \Carbon\Carbon::parse($sub_category->created_at)->format('d-m-Y') }}</td>
+                            <td>{{ \Carbon\Carbon::parse($sub_category->updated_at)->format('d-m-Y') }}</td>
                             <td>
                                 <div class="d-flex justify-content-center align-items-center">
-                                    <a href="{{ route('category.show', $category->id ) }}"> <button
+                                    <a href="{{ route('sub-category.show', $sub_category->id ) }}"> <button
                                             class="btn btn-info btn-sm mx-1"> <i class="fa-solid fa-eye"></i> </button>
                                     </a>
-                                    <a href="{{ route('category.edit', $category->id ) }}"> <button
+                                    <a href="{{ route('sub-category.edit', $sub_category->id ) }}"> <button
                                             class="btn btn-warning btn-sm mx-1"> <i class="fa-solid fa-edit"></i>
                                         </button> </a>
 
-                                        <form action="{{ route('category.destroy', $category->id ) }}" method='POST' id="form_{{ $category->id }}">
+                                        <form action="{{ route('sub-category.destroy', $sub_category->id ) }}" method='POST' id="form_{{ $sub_category->id }}">
                                             @csrf
                                             @method('DELETE')
                                             <button
-                                              type="button"  data_id="{{ $category->id }}" class="delete btn btn-danger btn-sm mx-1"> <i class="fa-solid fa-trash"></i>
+                                              type="button"  data_id="{{ $sub_category->id }}" class="delete btn btn-danger btn-sm mx-1"> <i class="fa-solid fa-trash"></i>
                                             </button>
                                         </form>
                                 </div>

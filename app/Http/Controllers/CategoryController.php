@@ -75,6 +75,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
+
         return view('backend.modules.category.edit', ['category' => $category]);
     }
 
@@ -110,7 +111,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->delete();
-        return Redirect()->back()->with('success', 'Category deletecd successfully');
+            $category->delete();
+            return Redirect()->back()->with('success', 'Category deletecd successfully');
     }
 }
