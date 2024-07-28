@@ -20,7 +20,7 @@
                     <form action="{{ route('category.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="category_name" class="form-label">Name</label>
+                            <label for="category_name" class="form-label badge bg-primary text-capitalize">Category Name</label>
                             <input type="text" class="form-control @error('category_name') is-invalid @enderror"
                                 name="category_name" value="{{ old('name') }}" id="category_name"
                                 aria-describedby="category_name" placeholder="Category name">
@@ -29,7 +29,7 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="slug" class="form-label">Slug</label>
+                            <label for="slug" class="form-label badge bg-primary text-capitalize">Slug</label>
                             <input type="text" class="form-control @error('slug_name') is-invalid @enderror" name="slug_name"
                                 value="{{ old('slug') }}" id="slug" aria-describedby="slug_name"
                                 placeholder="Slug name">
@@ -38,7 +38,7 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="order_by" class="form-label">category serial</label>
+                            <label for="order_by" class="form-label badge bg-primary text-capitalize">category serial</label>
                             <input type="slug" class="form-control @error('order_by') is-invalid @enderror"
                                 name="order_by" value="{{ old('order_by') }}" id="order_by"
                                 aria-describedby="order_by" placeholder="category serial">
@@ -47,7 +47,7 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="status" class="form-label">Category Status</label>
+                            <label for="status" class="form-label badge bg-primary text-capitalize">Category Status</label>
                             <select name="status" id="status" class="form-control">
                                 <option value="1">Active</option>
                                 <option value="0">Inactive</option>
@@ -55,7 +55,7 @@
                         </div>
                         <button type="submit" class="btn btn-success">Create category</button>
                     </form>
-                    <a href="{{ route('category.index') }}" class="btn btn-info mt-2">Back</a>
+                    <a href="{{ route('category.index') }}" class="btn btn-primary mt-2">Back</a>
                 </div>
             </div>
 

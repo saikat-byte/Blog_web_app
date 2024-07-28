@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\SubCategory;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -25,9 +26,8 @@ class PostController extends Controller
     {
 
        $categories = Category::pluck('category_name', 'id');
-       $sub_categories = SubCategory::pluck('sub_category_name', 'id');
-
-       return \view('backend.modules.post.create', \compact('categories', 'sub_categories'));
+        $tags = Tag::where('status', 1)->select('tag_name', 'id')->get();
+       return \view('backend.modules.post.create', \compact('categories','tags'));
     }
 
     /**
