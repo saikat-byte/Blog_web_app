@@ -40,7 +40,7 @@ class PostController extends Controller
     public function store(PostCreateRequest $request)
     {
 
-       $post_data = $request->except(['slug', 'photo', 'tag_name_ids']);
+        $post_data = $request->except(['slug', 'photo', 'tag_name_ids']);
         $post_data['slug'] = Str::slug($request->input('slug'));
         $post_data['user_id'] = Auth::user()->id;
         $post_data['is_approved'] = 1;
@@ -60,7 +60,7 @@ class PostController extends Controller
 
         }
 
-       $post = Post::create($post_data);
+        $post = Post::create($post_data);
 
         $post->tag()->attach($request->input('tag_name_ids'));
 
@@ -71,7 +71,8 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        $post->load(['tag', 'category', 'subCategory', 'user']);
+        return view('backend.modules.post.show', ['post' => $post]);
     }
 
     /**

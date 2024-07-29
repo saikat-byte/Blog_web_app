@@ -44,13 +44,13 @@
                                     <p>Is approved</p>
                                 </th>
                                 <th class="text-center">Photo</th>
+                                <th class="text-center">Tags</th>
                                 <th class="text-center">
                                     <p>Created at</p>
                                     <hr>
                                     <p>Updated at</p>
                                     <hr>
                                     <p>Created by</p>
-
                                 </th>
                                 <th class="text-center">Action</th>
                             </tr>
@@ -65,12 +65,13 @@
                                 <td>
                                     <p>{{ $post->title }}</p>
                                     <hr>
-                                    <p>{{ $post->slug}}</p>
+                                    <p>{{ $post?->slug}}</p>
                                 </td>
                                 <td>
-                                    <p>{{ $post->category->category_name }}</p>
+                                    <p><a href="{{ route('category.show', $post->category_id) }}">{{ $post->category?->category_name }}</a></p>
                                     <hr>
-                                    <p>{{ $post->subCategory->sub_category_name}}</p>
+
+                                    <p ><a href="{{ route('sub-category.show', $post->sub_category_id) }}">{{ $post->subCategory?->sub_category_name}}</a></p>
                                 </td>
 
                                 <td>
@@ -80,6 +81,17 @@
                                 </td>
                                 <td>
                                     <img  class="img-thumbnail post_image" data-src="{{ asset('image/post/original/'.$post->photo) }}" src="{{ asset('image/post/thumbnail/'.$post->photo) }}" alt="{{ $post->photo }}">
+                                </td>
+                                <td>
+                                    @php
+                                        $classes = ['text-bg-primary', 'text-bg-secondary', 'text-bg-dark', 'text-bg-danger', 'text-bg-warning', 'text-bg-info', ' text-bg-success']
+                                    @endphp
+
+                                    @foreach ($post->tag as $tag)
+
+                                       <a href="{{ route('tag.show', $tag->id) }}"> <span class="badge py-2  {{ $classes[random_int(0,6)] }} "> {{ $tag->tag_name }}</span></a>
+
+                                    @endforeach
                                 </td>
                                 <td>
                                     <p>{{ \Carbon\Carbon::parse($post->created_at)->format('d-m-Y')}}</p>

@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 
-@section('page_title', 'tag')
+@section('page_title', 'Tag')
 
 @section('page_sub_title', 'Details')
 

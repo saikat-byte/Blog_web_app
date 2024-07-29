@@ -1,5 +1,6 @@
 .post_table p{
     margin: 0;
+    font-size: 12px;
 }
 
 .post_table th, .post_table td{
@@ -23,4 +24,16 @@
 
 .post_table tr{
     border-bottom: 1px solid #000;
+}
+
+.post_table td a{
+    text-decoration: none;
+    color:darkblue;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+.post_table td a:hover{
+    color: darkcyan;
+
+
 }

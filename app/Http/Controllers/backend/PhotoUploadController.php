@@ -21,8 +21,7 @@ class PhotoUploadController extends Controller
         $image_name = $name.'.webp';
         $image = $manager->read($file);
         $image =  $image->resize($width, $height );
-        $image->toWebp(50)->save(public_path($path). '/' .$image_name);
-
+        $image->toWebp(50)->save(public_path($path).'/'.$image_name);
 
         return  $image_name;
     }
