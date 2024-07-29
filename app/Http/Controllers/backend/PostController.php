@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PostCreateRequest;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\SubCategory;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -33,9 +36,33 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostCreateRequest $request)
     {
-        //
+
+       $post_data = $request->except(['slug', 'photo', 'tag_name_ids']);
+        $post_data['slug'] = Str::slug($request->input('slug'));
+        $post_data['user_id'] = Auth::user()->id;
+        $post_data['is_approved'] = 1;
+
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $name = Str::slug($request->input('slug'));
+            $height = 400;
+            $width = 1000;
+            $thumb_height = 150;
+            $thumb_with = 150;
+            $path = 'image/post/orignal';
+            $thumb_path = 'image/post/thumbnail';
+            $photoUpload = new PhotoUploadController();
+            $post_data['photo'] = $photoUpload->imageUpload($name, $height, $width, $path, $file);
+            $photoUpload->imageUpload($name, $thumb_height, $thumb_with,  $thumb_path, $file);
+
+        }
+
+       $post = Post::create($post_data);
+
+        $post->tag()->attach($request->input('tag_name_ids'));
+
     }
 
     /**

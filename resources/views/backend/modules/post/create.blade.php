@@ -17,7 +17,7 @@
                 <h3>Create post</h3>
             </div>
             <div class="card-body">
-                <form action="{{ route('post.store') }}" method="POST">
+                <form action="{{ route('post.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="title" class="form-label badge bg-primary text-capitalize">Post title</label>
@@ -30,34 +30,39 @@
                     </div>
                     <div class="mb-3">
                         <label for="slug" class="form-label">Slug</label>
-                        <input type="text" class="form-control @error('slug_name') is-invalid @enderror"
-                            name="slug_name" value="" id="slug" aria-describedby="slug_name" placeholder="Slug name">
-                        @error('slug_name')
+                        <input type="text" class="form-control @error('slug') is-invalid @enderror"
+                            name="slug" value="" id="slug" aria-describedby="slug_name" placeholder="Slug name">
+                        @error('slug')
                         <div class="form-text text-danger">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="row">
                         <div class=" col-md-6 mb-3">
                             <label for="category_id" class="form-label badge bg-primary text-capitalize">Select category</label>
-                            <select name="category_name" id="category_id" class="form-select">
+                            <select name="category_id" id="category_id" class="form-select @error('category_id') is-invalid @enderror">
                                 <option value="" selected>Select category</option>
                                 @foreach($categories as $id => $category_name)
-                                <option value="{{ $id }}">{{ $category_name }}</option>
+                                <option value="{{ $id }}" >{{ $category_name }}</option>
                                 @endforeach
                             </select>
+                            @error('category_id')
+                            <div class="form-text text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="sub_category_id" class="form-label badge bg-primary text-capitalize">Select sub category</label>
-                            <select name="sub_category_name" id="sub_category_id" class="form-select">
+                            <select name="sub_category_id" id="sub_category_id" class="form-select @error('sub_category_id') is-invalid @enderror">
                                 <option selected="selected">Select sub category</option>
                             </select>
+                            @error('sub_category_id')
+                            <div class="form-text text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label badge bg-primary text-capitalize">Post description</label>
                         <textarea id="description" class="form-control  @error('description') is-invalid @enderror"
-                            name="description" placeholder="write something..."
-                            id="floatingTextarea">{{ old('description') }}</textarea>
+                            name="description" placeholder="write something...">{{ old('description') }}</textarea>
                         @error('description')
                         <div class="form-text text-danger">{{ $message }}</div>
                         @enderror
@@ -66,38 +71,39 @@
                         <label for="tag" class="form-label badge bg-primary text-capitalize">Select tag</label>
                         <div class="row">
                             @foreach($tags as $tag)
-                            <div class="col-md-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="form_{{ $tag->id }}" />
-                                    <label class="form-check-label" for="form_{{ $tag->id }}">{{ $tag->tag_name
-                                        }}</label>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input"  name="tag_name_ids[]" type="checkbox" id="form_{{ $tag->id }}" value="{{ $tag->id }}"/>
+                                        <label class="form-check-label" for="form_{{ $tag->id }}">{{ $tag->tag_name}}</label>
+                                    </div>
                                 </div>
-                            </div>
                             @endforeach
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="photo" class="form-label badge bg-primary text-capitalize">Upload photo</label>
                         <input type="file" class="form-control @error('photo') is-invalid @enderror"
-                            name="photo" value="" id="photo" aria-describedby="photo" placeholder="Upload photo">
+                            name="photo" id="photo" aria-describedby="photo">
                         @error('photo')
                         <div class="form-text text-danger">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="mb-3">
                         <label for="post_status" class="form-label badge bg-primary text-capitalize">Post Status</label>
-                        <select name="post_status" id="post_status" class="form-select">
+                        <select name="status" id="post_status" class="form-select  @error('status') is-invalid @enderror">
                             <option value="">Select post status</option>
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
                         </select>
+                        @error('status')
+                        <div class="form-text text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <button type="submit" class="btn btn-success text-capitalize">Create post</button>
                 </form>
                 <a href="{{ route('post.index') }}" class="btn btn-primary mt-2">Back</a>
             </div>
         </div>
-
     </div>
 </div>
 @push('css')
