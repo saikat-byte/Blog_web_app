@@ -19,7 +19,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+       $posts =  Post::with('category', 'subCategory', 'tag' ,'user')->latest()->paginate(20);
+        return \view('backend.modules.post.index', \compact('posts'));
     }
 
     /**
@@ -51,7 +52,7 @@ class PostController extends Controller
             $width = 1000;
             $thumb_height = 150;
             $thumb_with = 150;
-            $path = 'image/post/orignal';
+            $path = 'image/post/original';
             $thumb_path = 'image/post/thumbnail';
             $photoUpload = new PhotoUploadController();
             $post_data['photo'] = $photoUpload->imageUpload($name, $height, $width, $path, $file);

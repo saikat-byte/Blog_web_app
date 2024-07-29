@@ -1,0 +1,26 @@
+.post_table p{
+    margin: 0;
+}
+
+.post_table th, .post_table td{
+
+    vertical-align: middle;
+    text-align: center;
+    font-size: 13px;
+}
+
+.post_table th hr, .post_table td hr {
+    margin: 5px;
+    height: 1px;
+    background-color: rgb(14, 14, 1);
+    border: none;
+}
+
+.post_table td img{
+    width: 75px;
+    cursor: pointer;
+}
+
+.post_table tr{
+    border-bottom: 1px solid #000;
+}
