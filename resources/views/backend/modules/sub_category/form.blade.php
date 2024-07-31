@@ -3,7 +3,7 @@
     <div class="mb-3">
         <label for="sub_category_name" class="form-label text-capitalize">Name</label>
         <input type="text" class="form-control @error('sub_category_name') is-invalid @enderror"
-            name="sub_category_name" value="{{ old('name') }}" id="sub_category_name"
+            name="sub_category_name" value="{{ old('sub_category_name') }}" id="sub_category_name"
             aria-describedby="sub_category_name" placeholder="Sub category name">
         @error('sub_category_name')
             <div class="form-text text-danger">{{ $message }}</div>
@@ -12,7 +12,7 @@
     <div class="mb-3">
         <label for="slug" class="form-label text-capitalize">Slug</label>
         <input type="text" class="form-control @error('slug_name') is-invalid @enderror" name="slug_name"
-            value="{{ old('slug') }}" id="slug" aria-describedby="slug_name"
+            value="{{ old('slug_name') }}" id="slug" aria-describedby="slug_name"
             placeholder="Slug name">
         @error('slug_name')
             <div class="form-text text-danger">{{ $message }}</div>
@@ -23,7 +23,7 @@
         <select name="category_id" id="category" class="form-select">
             <option value="" selected>Select category</option>
             @foreach($categories as $id => $category_name)
-            <option value="{{ $id }}">{{ $category_name }}</option>
+            <option value="{{ old('category_id', $id)  }}">{{ $category_name }}</option>
             @endforeach
         </select>
     </div>

@@ -1,4 +1,21 @@
+
 .sidebar-subcategory{
 
+margin-left: 16px}
 
-}
+.sidebar-subcategory li {
+    margin-bottom: 3px !important;
+  }
+  .sidebar-subcategory .sidebar-subcategory-list{
+    font-size: 14   px !important;
+    color: gray!important;
+  }
+
+  .read-more-btn{
+    background: #f48840 !important;
+    border: none !important;
+  }
+  .read-more-btn:hover{
+
+    background-color: gray !important;
+  }
