@@ -13,9 +13,6 @@ class PhotoUploadController extends Controller
     public function imageUpload( string $name, int $height, int $width, string $path, $file) : string
     {
 
-        // if (!file_exists(public_path($path))) {
-        //     mkdir(public_path($path), 0777, true);
-        // }
 
         $manager = new ImageManager(new Driver());
         $image_name = $name.'.webp';

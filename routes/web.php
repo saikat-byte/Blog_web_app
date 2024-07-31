@@ -52,5 +52,7 @@ Route::group(["prefix" => "dashboard"], function (){
     Route::resource('sub-category', SubCategoryController::class);
     Route::resource('tag', TagController::class);
     Route::resource('post', PostController::class);
+    Route::get('get-subcategory/{id}', [SubCategoryController::class, 'getSubCategoryByCategoryId']);
+
 });
 

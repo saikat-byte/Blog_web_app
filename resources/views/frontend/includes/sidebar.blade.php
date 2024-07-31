@@ -38,12 +38,19 @@
             </div>
             <div class="content">
               <ul>
-                <li><a href="#">- Nature Lifestyle</a></li>
-                <li><a href="#">- Awesome Layouts</a></li>
-                <li><a href="#">- Creative Ideas</a></li>
-                <li><a href="#">- Responsive Templates</a></li>
-                <li><a href="#">- HTML5 / CSS3 Templates</a></li>
-                <li><a href="#">- Creative &amp; Unique</a></li>
+                @foreach ($categories as $category)
+                <li><a href="#">-{{ $category->category_name }}</a>
+
+                    <ul class="sidebar-subcategory">
+                        @foreach ($category->sub_categories as $sub_category)
+                        <li><a href="">{{ $sub_category->sub_category_name }}</a></li>
+                        @endforeach
+                    </ul>
+
+                </li>
+                @endforeach
+
+
               </ul>
             </div>
           </div>
@@ -55,13 +62,10 @@
             </div>
             <div class="content">
               <ul>
-                <li><a href="#">Lifestyle</a></li>
-                <li><a href="#">Creative</a></li>
-                <li><a href="#">HTML5</a></li>
-                <li><a href="#">Inspiration</a></li>
-                <li><a href="#">Motivation</a></li>
-                <li><a href="#">PSD</a></li>
-                <li><a href="#">Responsive</a></li>
+                @foreach ($tags as $tag)
+                <li><a href="#">{{ $tag->tag_name }}</a></li>
+                @endforeach
+
               </ul>
             </div>
           </div>
