@@ -41,9 +41,11 @@ require __DIR__.'/auth.php';
 // frontend
 
 Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
-Route::get('/category/{slug}', [FrontendController::class, 'index'])->name('frontend.category');
-Route::get('/category/{cat_slug}/{sub_cat_slug}', [FrontendController::class, 'index'])->name('frontend.subcategory');
-Route::get('/tag/{slug}', [FrontendController::class, 'index'])->name('frontend.tag');
+Route::get('/all-post', [FrontendController::class, 'all_post'])->name('frontend.all_post');
+Route::get('/search', [FrontendController::class, 'search'])->name('frontend.search');
+Route::get('/category/{slug}', [FrontendController::class, 'category'])->name('frontend.category');
+Route::get('/category/{cat_slug}/{sub_cat_slug}', [FrontendController::class, 'sub_category'])->name('frontend.subcategory');
+Route::get('/tag/{slug}', [FrontendController::class, 'tag'])->name('frontend.tag');
 Route::get('/single-post/{slug}', [FrontendController::class, 'single'])->name('frontend.single');
 
 

@@ -13,7 +13,7 @@ jQuery( document ).ready(function( $ ) {
                 $("#preloader").css("visibility", "hidden").fadeOut();
             }, 300);
         });
-        
+
 
         $(window).scroll(function() {
           var scroll = $(window).scrollTop();
@@ -88,5 +88,5 @@ jQuery( document ).ready(function( $ ) {
                 }
             });
         }
- 
+
 });

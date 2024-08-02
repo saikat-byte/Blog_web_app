@@ -20,3 +20,4 @@
 <link rel="stylesheet" href="{{asset('frontend/assets/css/templatemo-stand-blog.css')}}">
 <link rel="stylesheet" href="{{asset('frontend/assets/css/owl.css')}}">
 <link rel="stylesheet" href="{{asset('frontend/assets/css/custom.css')}}">
+<link rel="stylesheet" href="{{asset('frontend/assets/css/custom.css')}}">

@@ -19,3 +19,19 @@ margin-left: 16px}
 
     background-color: gray !important;
   }
+
+  .item img{
+
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+  }
+
+  .search-btn{
+
+    background-color: #f48840;
+  }
+  .search-btn:hover{
+    background-color: #febe93;
+  }
+

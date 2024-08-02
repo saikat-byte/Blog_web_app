@@ -14,7 +14,7 @@
             <img src="{{asset('image/post/original/'.$post->photo)}}" alt="{{ $post->title }}">
           </div>
           <div class="down-content">
-            <span>{{ $post->category->category_name }}</span>
+            <span>{{ $post->category->category_name }}  <sub class="text-warning">{{  $post->subCategory?->sub_category_name }} </sub></span>
             <a href="{{ route('frontend.single', $post->slug) }}"><h4>{{ $post->title }}</h4></a>
             <ul class="post-info">
               <li><a href="#">{{ $post->user?->name }}</a></li>
@@ -51,7 +51,7 @@
 
         <div class="col-lg-12">
           <div class="main-button">
-            <a href="blog.html">View all</a>
+            <a href="{{ route('frontend.all_post') }}">View all</a>
           </div>
         </div>
 
