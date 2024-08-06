@@ -7,6 +7,7 @@ use App\Http\Controllers\backend\PostController;
 use App\Http\Controllers\backend\ProfileController;
 use App\Http\Controllers\backend\SubCategoryController;
 use App\Http\Controllers\backend\TagController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -58,6 +59,7 @@ Route::group(["prefix" => "dashboard"], function (){
     Route::resource('tag', TagController::class);
     Route::resource('post', PostController::class);
     Route::get('get-subcategory/{id}', [SubCategoryController::class, 'getSubCategoryByCategoryId']);
+    Route::resource('comment', CommentController::class);
 
 });
 

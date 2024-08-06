@@ -33,8 +33,10 @@
                       </div>
                       <div class="down-content">
                         <span>{{  $post->category->category_name }} <sub class="text-warning">{{  $post->subCategory?->sub_category_name }} </sub> </span>
-                        <a href="post-details.html"><h4>{{ $post->title }}</h4></a>
+                        <a href="{{route('frontend.single', $post->slug)}}"><h4>{{ $post->title }}</h4></a>
+
                         <div class="post-options">
+                             <p>{{ strip_tags(substr($post->description, 0, 150)). '...' }}</p>
                             <div class="row">
                               <div class="col-lg-12">
                                 <ul class="post-tags">
@@ -46,12 +48,11 @@
                               </div>
                             </div>
                           </div>
-                        <ul class="post-info">
+                        <ul class="post-info mb-3">
                           <li><a href="#">{{  $post->user->name }}</a></li>
                           <li><a href="#">{{ \Carbon\Carbon::parse($post->created_at)->format('M-d-Y') }}</a></li>
                           <li><a href="#">12 Comments</a></li>
                         </ul>
-                        <p>{{ strip_tags(substr($post->description, 0, 150)). '...' }}</p>
                         <a href="{{ route('frontend.single', $post->slug) }}"> <button class="btn btn-primary btn-sm read-more-btn">Readmore</button> </a>
                       </div>
                     </div>

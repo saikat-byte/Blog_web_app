@@ -8,6 +8,9 @@ use App\Models\Post;
 use App\Models\SubCategory;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+use function Laravel\Prompts\select;
 
 class FrontendController extends Controller
 {
@@ -18,22 +21,10 @@ class FrontendController extends Controller
         $slider_posts = $query->inRandomOrder()->take(5)->get();
         return view('frontend.modules.index', \compact('posts', 'slider_posts'));
     }
-    public function single(){
-
-
-        $posts = Post::with('category', 'tag', 'user', 'subCategory')
-        ->where('is_approved', 1)
-        ->where('status', 1)
-        ->latest()
-        ->firstOrFail();
-        $post_title = "Blog Post";
-        $sub_title = "Post Details";
-        return view('frontend.modules.single-post', \compact('posts', 'post_title', 'sub_title'));
-    }
 
     public function all_post(){
 
-        $posts = Post::with('category', 'tag', 'user', 'subCategory')->where('is_approved', 1)->where('status', 1)->latest()->paginate(9);
+        $posts = Post::with('category', 'tag', 'user', 'subCategory')->where('is_approved', 1)->where('status', 1)->latest()->paginate(10);
         $title = "View all post";
         $sub_title = "Blog post";
         return \view('frontend.modules.blog', \compact('posts', 'title', 'sub_title'));
@@ -90,22 +81,34 @@ class FrontendController extends Controller
         $sub_title = "Post by sub category";
         return \view('frontend.modules.blog', \compact('posts', 'title', 'sub_title'));
     }
-    // public function tag($slug){
+    public function tag($slug){
+        $tag = Tag::with('post')->where('slug_name', $slug)->first();
+        $post_ids = DB::table('post_tag')->where('tag_id', $tag->id)->distinct('post_id')->pluck('post_id');
+        $post = $tag->post;
+        if ( $tag) {
+             $posts = Post::with('category', 'tag', 'user', 'subCategory')
+             ->where('is_approved', 1)
+             ->where('status', 1)
+             ->whereIn('id',$post_ids)
+             ->latest()
+             ->paginate(10);
+        }
 
-    //     $tag = Tag::where('slug_name', $slug)->firstOrFail();
-
-    //     if ($tag) {
-    //          $posts = Post::with('category', 'tag', 'user', 'subCategory')
-    //          ->where('is_approved', 1)
-    //          ->where('status', 1)
-    //          ->where('tag_id', $tag->id)
-    //          ->latest()
-    //          ->paginate(10);
-    //     }
+         $title = $tag->tag_name;
+         $sub_title = "Post by tag";
+         return \view('frontend.modules.blog', \compact('posts', 'title', 'sub_title'));
+    }
 
 
-    //      $title = $tag->tag_name;
-    //      $sub_title = "Post by tag";
-    //      return \view('frontend.modules.blog', \compact('posts', 'title', 'sub_title'));
-    // }
+    public function single(string $slug){
+        $posts = Post::with('category', 'tag', 'user', 'subCategory', 'comment', 'comment.user')
+        ->where('is_approved', 1)
+        ->where('status', 1)
+        ->where('slug', $slug)
+        ->firstOrFail();
+        $post_title = "Blog Post";
+        $sub_title = "Post Details";
+
+        return \view('frontend.modules.single-post', \compact('posts', 'post_title', 'sub_title'));
+    }
 }
