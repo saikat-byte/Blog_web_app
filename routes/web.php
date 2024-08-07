@@ -8,6 +8,7 @@ use App\Http\Controllers\backend\ProfileController;
 use App\Http\Controllers\backend\SubCategoryController;
 use App\Http\Controllers\backend\TagController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,6 +49,8 @@ Route::get('/category/{slug}', [FrontendController::class, 'category'])->name('f
 Route::get('/category/{cat_slug}/{sub_cat_slug}', [FrontendController::class, 'sub_category'])->name('frontend.subcategory');
 Route::get('/tag/{slug}', [FrontendController::class, 'tag'])->name('frontend.tag');
 Route::get('/single-post/{slug}', [FrontendController::class, 'single'])->name('frontend.single');
+Route::get('/contact-us', [FrontendController::class, 'contact_us'])->name('frontend.contactus');
+Route::post('/contact-us', [ContactController::class, 'store'])->name('contact.store');
 
 
 // Backend -Dashboard

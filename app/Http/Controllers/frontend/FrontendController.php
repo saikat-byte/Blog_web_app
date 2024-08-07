@@ -9,6 +9,7 @@ use App\Models\SubCategory;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 use function Laravel\Prompts\select;
 
@@ -111,4 +112,11 @@ class FrontendController extends Controller
 
         return \view('frontend.modules.single-post', \compact('posts', 'post_title', 'sub_title'));
     }
+
+
+   final public function contact_us(){
+
+        return view('frontend.modules.contact');
+    }
+
 }

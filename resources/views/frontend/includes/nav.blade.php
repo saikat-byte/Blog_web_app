@@ -21,7 +21,7 @@
             <a class="nav-link" href="post-details.html">Post Details</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="contact.html">Contact Us</a>
+            <a class="nav-link" href="{{ route('frontend.contactus') }}">Contact Us</a>
           </li>
         </ul>
       </div>
