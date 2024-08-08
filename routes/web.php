@@ -9,6 +9,7 @@ use App\Http\Controllers\backend\SubCategoryController;
 use App\Http\Controllers\backend\TagController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -63,6 +64,9 @@ Route::group(["prefix" => "dashboard"], function (){
     Route::resource('post', PostController::class);
     Route::get('get-subcategory/{id}', [SubCategoryController::class, 'getSubCategoryByCategoryId']);
     Route::resource('comment', CommentController::class);
+    Route::resource('user-profile', UserProfileController::class);
+    Route::get('user-states',[ UserProfileController::class, 'getStates'])->name('states');
+    Route::get('user-cities',[ UserProfileController::class, 'getCities'])->name('cities');
 
 });
 

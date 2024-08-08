@@ -10,7 +10,7 @@
                         <div class="meta-category">
                             <span>{{ $slider_post->category->category_name }}</span>
                         </div>
-                        <a href="post-details.html">
+                        <a href="{{ route('frontend.single', $slider_post->slug) }}">
                             <h4>{{ $slider_post->title }}</h4>
                         </a>
                         <ul class="post-info">
