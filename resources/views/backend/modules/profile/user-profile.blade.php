@@ -6,7 +6,7 @@
 
 @section('content')
 <div class="row justify-content-center">
-    <div class="col-md-6">
+    <div class="col-md-9">
         <div class="card">
             @if (session()->has('success'))
             <div class="alert alert-success">
@@ -37,28 +37,53 @@
                     </div>
                     <div class="row">
                         <div class=" col-md-12 mb-3">
-                            <label for="country" class="form-label">Country</label>
-                            <select name="country" id="country" class="form-control">
+                            <label for="country_id" class="form-label">Country</label>
+                            <select name="country_id" id="country_id" class="form-select">
                                 <option value="" selected>Select your country</option>
-                                @foreach($countries as $country)
-
-                                <option value="{{ $country->country_name }}">{{ $country->country_name }}</option>
+                                @foreach ($countries as $id => $name)
+                                    <option value="{{ $id }}">{{ $name }}</option>
                                 @endforeach
                             </select>
-                            <input type="hidden" name="token" id="token" value="{{ $token }}">
+                            @error('country_id')
+                            <div class="form-text text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class=" col-md-6 mb-3">
-                            <label for="state" class="form-label">State</label>
-                            <select name="state" id="state" class="form-control">
-                                <option value="" selected>Select your State</option>
+                            <label for="state_id" class="form-label">State</label>
+                            <select name="state_id" id="state_id" class="form-select" disabled>
+                                <option value="" >Select State</option>
                             </select>
+                            @error('state_id')
+                            <div class="form-text text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class=" col-md-6 mb-3">
-                            <label for="city" class="form-label">City</label>
-                            <select name="city" id="city" class="form-control">
-                                <option value="1" selected>Select your city</option>
+                            <label for="city_id" class="form-label">City</label>
+                            <select name="city_id" id="city_id" class="form-select" disabled>
+                                <option value="" selected>Select City</option>
                             </select>
+                            @error('city_id')
+                            <div class="form-text text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
+                    </div>
+                    <div class="mb-3">
+                        <p>Select gender</p>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="male" value="Male" />
+                            <label class="form-check-label" for="male">Male</label>
+                          </div>
+
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="female" value="Female" />
+                            <label class="form-check-label" for="female">Female</label>
+                          </div>
+
+                          <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="others" value="option3" />
+                            <label class="form-check-label" for="others">Others</label>
+                          </div>
+
                     </div>
                     <button type="submit" class="btn btn-success">Update Profile</button>
                 </form>
@@ -66,89 +91,66 @@
         </div>
 
     </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">
+                <h3>Profile picture</h3>
+            </div>
+            <div class="card-body">
+                <label for="profile_photo">Upload profile picture</label>
+                <input type="file" name="profile_photo" id="profile_photo">
+            </div>
+        </div>
+    </div>
 </div>
 
-
 @push('js')
-<script type="text/javascript">
-    $(document).ready(function () {
-            $('#country').change(function (e) {
-                e.preventDefault();
-                var country = $(this).val();
+    <script type="text/javascript">
 
-                if (country == '') {
-                    country = null;
-                }
+        const getStates = (country_id) => {
+            axios.get(`${window.location.origin}/user-states/${country_id}`).then( res => {
 
-                var data = {
-                    token : $('#token').val(),
-                    country: country
-                }
-                $.ajax({
-                type: "GET",
-                url: "{{ route('states') }}",
-                data: data,
-                dataType: 'json',
-                success: function (response) {
-                    var states = response;
-                    var html = '<option value="" >Select your State</option>';
-                    if (states.length > 0) {
-                        for(var i = 0; i < states.length; i++){
-                            html += '<option value="'+ states[i]['state_name'] +'">' +
-                                states[i]['state_name'] +
-                                '</option>';
-                        }
-                        $('#state').html(html);
-                    }
-                },
-                // Error handling
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error: ", error);
-                }
-            });
-            });
+                let states = res.data
+                let element = $('#state_id')
+                let city_element = $('#city_id').empty().append(`<option value="">Select City</option>`).attr('disabled', 'disabled');
+                 element.removeAttr('disabled')
+                 element.empty()
+                 element.append(`<option value="">Select State</option>`)
+
+                states.map((state, index) => {
+                    element.append(`<option value="${state.id}">${state.name}</option>`)
+                })
+
+            })
+        }
 
 
-            // City fetch
+        $('#country_id').on('change', function(){
+            getStates($(this).val())
+        })
 
 
-            $('#state').change(function (e) {
-                e.preventDefault();
-                var state = $(this).val();
+        // change city when select state
 
-                if (state == '') {
-                    state = null;
-                }
+        const getCities = (state_id) => {
+            axios.get(`${window.location.origin}/user-cities/${state_id}`).then( res => {
 
-                var data = {
-                    token : $('#token').val(),
-                    state: state
-                }
-                $.ajax({
-                type: "GET",
-                url: "{{ route('cities') }}",
-                data: data,
-                dataType: 'json',
-                success: function (response) {
-                    var cities = response;
-                    var html = '<option value="" >Select your State</option>';
-                    if (cities.length > 0) {
-                        for(var i = 0; i < cities.length; i++){
-                            html += '<option value="'+ cities[i]['city_name'] +'">' +
-                                cities[i]['city_name'] +
-                                '</option>';
-                        }
-                        $('#city').html(html);
-                    }
-                },
-                // Error handling
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error: ", error);
-                }
-            });
-            });
+                let cities = res.data
+                let element = $('#city_id')
+                 element.removeAttr('disabled')
+                 element.empty()
+                 element.append(`<option value="">Select City</option>`)
 
-        });
-</script>
+                 cities.map((city, index) => {
+                    element.append(`<option value="${city.id}">${city.name}</option>`)
+                })
+
+            })
+        }
+        $('#state_id').on('change', function(){
+            getCities($(this).val())
+        })
+    </script>
 @endpush
+
 @endsection
