@@ -26,7 +26,8 @@ class UserProfileController extends Controller
     {
 
        $countries = Country::pluck('name', 'id');
-        return \view('backend.modules.profile.user-profile', \compact('countries'));
+       $userProfile = UserProfile::where('user_id', Auth::id())->first();
+        return \view('backend.modules.profile.user-profile', \compact('countries', 'userProfile'));
     }
 
     /**
@@ -35,6 +36,7 @@ class UserProfileController extends Controller
     public function store(Request $request)
     {
 
+
         $validator = Validator::make($request->all(), [
 
             'phone' => 'required',
@@ -42,15 +44,29 @@ class UserProfileController extends Controller
             'country_id' => 'required',
             'state_id' => 'required',
             'city_id' => 'required',
-            'gender' => 'nullable|string|in:Male,Female,Others',
+            'gender' => 'required|string|in:Male,Female,Others',
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
+        $porife_data = $request->all();
+        $porife_data['user_id'] = Auth::id();
 
-    return redirect()->route('user-profile.create')->with('success', 'Profile updated successfully');
+        $existing_profile = UserProfile::where('user_id', Auth::id())->first();
+
+        if ($existing_profile) {
+
+            $existing_profile->update($porife_data);
+            return redirect()->route('user-profile.create')->with('success', 'Profile updated successfully');
+        }else {
+            UserProfile::create($porife_data);
+            return redirect()->route('user-profile.create')->with('success', 'Profile created successfully');
+
+        }
+
+
     }
 
     /**

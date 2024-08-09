@@ -17,12 +17,13 @@
                 <h3>Profile</h3>
             </div>
             <div class="card-body">
-                <form action="{{ route('user-profile.store') }}" method="POST">
+                <form action="{{ route('user-profile.store', $userProfile ? $userProfile->id : '') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="phone" class="form-label">Phone</label>
                         <input type="text" class="form-control @error('phone') is-invalid @enderror" name="phone"
-                            value="{{ old('phone') }}" id="phone" aria-describedby="phone" placeholder="Phone">
+                            value="{{ old('phone', $userProfile->phone ?? '') }}" id="phone" aria-describedby="phone"
+                            placeholder="Phone">
                         @error('phone')
                         <div class="form-text text-danger">{{ $message }}</div>
                         @enderror
@@ -30,7 +31,8 @@
                     <div class="mb-3">
                         <label for="address" class="form-label">Address</label>
                         <input type="text" class="form-control @error('address') is-invalid @enderror" name="address"
-                            value="{{ old('address') }}" id="address" aria-describedby="address" placeholder="Address">
+                            value="{{ old('address', $userProfile->address ?? '') }}" id="address" aria-describedby="address"
+                            placeholder="Address">
                         @error('address')
                         <div class="form-text text-danger">{{ $message }}</div>
                         @enderror
@@ -41,7 +43,8 @@
                             <select name="country_id" id="country_id" class="form-select">
                                 <option value="" selected>Select your country</option>
                                 @foreach ($countries as $id => $name)
-                                    <option value="{{ $id }}">{{ $name }}</option>
+                                <option value="{{ $id }}" {{ $id == ($userProfile->country_id ?? '') ? 'selected' : '' }}>{{ $name
+                                    }}</option>
                                 @endforeach
                             </select>
                             @error('country_id')
@@ -51,7 +54,7 @@
                         <div class=" col-md-6 mb-3">
                             <label for="state_id" class="form-label">State</label>
                             <select name="state_id" id="state_id" class="form-select" disabled>
-                                <option value="" >Select State</option>
+                                <option value="">Select State</option>
                             </select>
                             @error('state_id')
                             <div class="form-text text-danger">{{ $message }}</div>
@@ -70,20 +73,22 @@
                     <div class="mb-3">
                         <p>Select gender</p>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="male" value="Male" />
+                            <input class="form-check-input" type="radio" name="gender" id="male" value="Male" {{ old('gender', $userProfile->gender ?? '') == 'Male' ? 'checked' : '' }} />
                             <label class="form-check-label" for="male">Male</label>
-                          </div>
+                        </div>
 
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="female" value="Female" />
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="female" value="Female" {{ old('gender', $userProfile->gender ?? '') == 'Female' ? 'checked' : '' }}/>
                             <label class="form-check-label" for="female">Female</label>
-                          </div>
+                        </div>
 
-                          <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="others" value="option3" />
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="others" value="Others" {{ old('gender', $userProfile->gender ?? '') == 'Others' ? 'checked' : '' }}/>
                             <label class="form-check-label" for="others">Others</label>
-                          </div>
-
+                        </div>
+                        @error('gender')
+                        <div class="form-text text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <button type="submit" class="btn btn-success">Update Profile</button>
                 </form>
@@ -105,52 +110,67 @@
 </div>
 
 @push('js')
-    <script type="text/javascript">
+<script type="text/javascript">
+    // Fetch state when select country
+    const getStates = (country_id, selectedStateId = null) => {
+        if (!country_id) return; // Add a guard clause to handle cases where country_id is not provided
+        axios.get(`${window.location.origin}/user-states/${country_id}`).then(res => {
+            let states = res.data;
+            let element = $('#state_id');
+            let city_element = $('#city_id').empty().append(`<option value="">Select City</option>`).attr('disabled', 'disabled');
 
-        const getStates = (country_id) => {
-            axios.get(`${window.location.origin}/user-states/${country_id}`).then( res => {
+            element.removeAttr('disabled');
+            element.empty();
+            element.append(`<option value="">Select State</option>`);
 
-                let states = res.data
-                let element = $('#state_id')
-                let city_element = $('#city_id').empty().append(`<option value="">Select City</option>`).attr('disabled', 'disabled');
-                 element.removeAttr('disabled')
-                 element.empty()
-                 element.append(`<option value="">Select State</option>`)
+            states.forEach((state) => {
+                element.append(`<option value="${state.id}" ${selectedStateId == state.id ? 'selected' : ''}>${state.name}</option>`);
+            });
 
-                states.map((state, index) => {
-                    element.append(`<option value="${state.id}">${state.name}</option>`)
-                })
+        }).catch(error => {
+            console.error("There was an error fetching the states:", error);
+        });
+    }
 
-            })
+    $('#country_id').on('change', function(){
+        getStates($(this).val());
+    });
+
+    // Fetch city when select state
+    const getCities = (state_id, selectedCityId = null) => {
+        if (!state_id) return; // Add a guard clause to handle cases where state_id is not provided
+        axios.get(`${window.location.origin}/user-cities/${state_id}`).then(res => {
+            let cities = res.data;
+            let element = $('#city_id');
+
+            element.removeAttr('disabled');
+            element.empty();
+            element.append(`<option value="">Select City</option>`);
+
+            cities.forEach((city) => {
+                element.append(`<option value="${city.id}" ${selectedCityId == city.id ? 'selected' : ''}>${city.name}</option>`);
+            });
+
+        }).catch(error => {
+            console.error("There was an error fetching the cities:", error);
+        });
+    }
+
+    $('#state_id').on('change', function(){
+        getCities($(this).val());
+    });
+
+    // On page load, if userProfile exists, populate states and cities
+    const userProfile = @json($userProfile); // Convert $userProfile to JSON to handle null cases
+    if (userProfile && userProfile.country_id) {
+        getStates(userProfile.country_id, userProfile.state_id);
+        if (userProfile.state_id) {
+            getCities(userProfile.state_id, userProfile.city_id);
         }
+    }
+</script>
 
 
-        $('#country_id').on('change', function(){
-            getStates($(this).val())
-        })
-
-
-        // change city when select state
-
-        const getCities = (state_id) => {
-            axios.get(`${window.location.origin}/user-cities/${state_id}`).then( res => {
-
-                let cities = res.data
-                let element = $('#city_id')
-                 element.removeAttr('disabled')
-                 element.empty()
-                 element.append(`<option value="">Select City</option>`)
-
-                 cities.map((city, index) => {
-                    element.append(`<option value="${city.id}">${city.name}</option>`)
-                })
-
-            })
-        }
-        $('#state_id').on('change', function(){
-            getCities($(this).val())
-        })
-    </script>
 @endpush
 
 @endsection

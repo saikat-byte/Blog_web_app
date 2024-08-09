@@ -21,28 +21,4 @@ class UserProfile extends Model
     ];
 
 
-      // Relationship with User
-      public function user()
-      {
-          return $this->belongsTo(User::class);
-      }
-
-      // Relationship with Country
-      public function country()
-      {
-          return $this->belongsTo(Country::class);
-      }
-
-      // Relationship with State
-      public function state()
-      {
-          return $this->belongsTo(State::class);
-      }
-
-      // Relationship with City
-      public function city()
-      {
-          return $this->belongsTo(City::class);
-      }
-
 }

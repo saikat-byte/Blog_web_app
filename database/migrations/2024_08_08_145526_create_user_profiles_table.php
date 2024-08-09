@@ -17,9 +17,9 @@ return new class extends Migration
             $table->foreignId('country_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('state_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->foreignId('city_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
-            $table->string('phone')->nullable();
-            $table->string('address', 15)->nullable();
-            $table->string('photo', 15)->nullable();
+            $table->string('phone', 15)->nullable();
+            $table->string('address')->nullable();
+            $table->string('photo')->nullable();
             $table->string('gender', 10)->nullable();
             $table->timestamps();
         });
