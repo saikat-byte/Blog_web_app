@@ -99,11 +99,23 @@
     <div class="col-md-3">
         <div class="card">
             <div class="card-header">
-                <h3>Profile picture</h3>
+                <h3>Profile photo</h3>
+                @if(!empty($userProfile->photo))
+                @php
+                    $photoUrl = asset('image/user/' . $userProfile->photo);
+                @endphp
+                <img id="previous_photo" src="{{ $photoUrl }}" class="img-thumbnail" alt="Profile Photo">
+                @else
+                    <p class="text-danger">No profile photo available</p>
+                @endif
+                <p id="upload_success_message" class="text-success"></p> <!-- Success message -->
             </div>
             <div class="card-body">
-                <label for="profile_photo">Upload profile picture</label>
-                <input type="file" name="profile_photo" id="profile_photo">
+                <label for="profile_photo" class="badge text-bg-primary py-2">Upload profile picture</label>
+                <input type="file" class="form-control my-2" name="profile_photo" id="profile_photo">
+                <p class="text-danger" id="error_message"></p>
+                <img id="img-preview" src="" alt="" class="img-thumbnail">
+                <button id="image_upload_button" class="btn btn-success btn-sm my-2">Upload</button>
             </div>
         </div>
     </div>
@@ -111,6 +123,47 @@
 
 @push('js')
 <script type="text/javascript">
+
+    $('#profile_photo').on('change', function(e){
+    let file = e.target.files[0];
+    let reader = new FileReader();
+    reader.onloadend = () =>{
+        $('#img-preview').attr('src', reader.result);
+    }
+    reader.readAsDataURL(file);
+});
+
+
+$('#image_upload_button').on('click', function(){
+    let photo = $('#img-preview').attr('src');
+
+    if (photo) {
+        $('#error_message').text(''); // Clear any previous errors
+
+        axios.post('{{ route('upload.photo') }}', { photo: photo })
+            .then(response => {
+                if (response.data.success) {
+                    // Update the photo in the UI
+                    $('#previous_photo').attr('src', response.data.photo);
+                    $('#img-preview').attr('src', '');
+                    // Show success message
+                    $('#upload_success_message').text(response.data.success);
+                     // Reset the file input field
+                     $('#profile_photo').val(''); // This will clear the file input
+                } else {
+                    // Handle errors from server
+                    $('#error_message').text(response.data.msg);
+                }
+            })
+            .catch(error => {
+                console.error('There was an error uploading the photo:', error);
+            });
+    } else {
+        $('#error_message').text('Please select a photo');
+    }
+});
+
+
     // Fetch state when select country
     const getStates = (country_id, selectedStateId = null) => {
         if (!country_id) return; // Add a guard clause to handle cases where country_id is not provided

@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\SubCategory;
 use App\Models\Tag;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -20,7 +21,15 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts =  Post::with('category', 'subCategory', 'tag', 'user')->latest()->paginate(20);
+        // User can see only their post section
+        $query =  Post::with('category', 'subCategory', 'tag', 'user')->latest();
+        if (Auth::user()->role === User::USER) {
+            $posts = $query->where('user_id', Auth::id())->paginate(20);
+        }else{
+            $posts = $query->paginate(20);
+
+        }
+
         return \view('backend.modules.post.index', \compact('posts'));
     }
 
@@ -72,7 +81,12 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $post->load(['tag', 'category', 'subCategory', 'user']);
+        if ( Auth::user()->role == User::USER && $post->user_id !== Auth::id()) {
+             \abort(403, 'Unauthorized');
+        }else{
+            $post->load(['tag', 'category', 'subCategory', 'user']);
+        }
+
         return view('backend.modules.post.show', ['post' => $post]);
     }
 

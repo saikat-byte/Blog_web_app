@@ -101,7 +101,7 @@ class FrontendController extends Controller
     }
 
 
-    public function single(string $slug){
+  final public function single(string $slug){
         $posts = Post::with('category', 'tag', 'user', 'subCategory', 'comment', 'comment.user')
         ->where('is_approved', 1)
         ->where('status', 1)
