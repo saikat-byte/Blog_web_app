@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('post_counts', function (Blueprint $table) {
             $table->id();
+            $table->integer('count')->nullable();
+            $table->foreignId('post_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
             $table->timestamps();
         });
     }
