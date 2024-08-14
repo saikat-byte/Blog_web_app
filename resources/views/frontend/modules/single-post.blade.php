@@ -153,5 +153,18 @@
         </div>
     </div>
 </section>
+@push('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.4/axios.min.js" integrity="sha512-6VJrgykcg/InSIutW2biLwA1Wyq+7bZmMivHw19fI+ycW0jIjsadm8wKQQLlfv3YUS4owfMDlZU38NtaAK6fSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+    <script type="text/javascript">
+
+        const readCount = () => {
+            axios.get(window.location.origin+'/post-count/'+{{ $posts->id }})
+        }
+
+        setTimeout(() => {
+            readCount();
+        }, 10000);
+    </script>
+@endpush
 @endsection

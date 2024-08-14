@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\PostCountController;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\SubCategory;
@@ -109,10 +110,13 @@ class FrontendController extends Controller
         ->firstOrFail();
         $post_title = "Blog Post";
         $sub_title = "Post Details";
-
         return \view('frontend.modules.single-post', \compact('posts', 'post_title', 'sub_title'));
     }
 
+    final public function postReadCount($post_id){
+
+        (new PostCountController($post_id))->postReadCount();
+    }
 
    final public function contact_us(){
 

@@ -13,3 +13,4 @@
     <script src="{{asset('frontend/assets/js/owl.js')}}"></script>
     <script src="{{asset('frontend/assets/js/slick.js')}}"></script>
     <script src="{{asset('frontend/assets/js/custom.js')}}"></script>
+    @stack('js')

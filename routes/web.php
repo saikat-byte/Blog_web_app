@@ -9,6 +9,7 @@ use App\Http\Controllers\backend\SubCategoryController;
 use App\Http\Controllers\backend\TagController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PostCountController;
 use App\Http\Controllers\UserProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +55,7 @@ Route::post('/contact-us', [ContactController::class, 'store'])->name('contact.s
 Route::get('user-states/{country_id}',[ UserProfileController::class, 'getStates'])->name('states');
 Route::get('user-cities/{state_id}',[ UserProfileController::class, 'getCities'])->name('cities');
 Route::get('user-cities',[ UserProfileController::class, 'getCities'])->name('cities');
+Route::get('post-count/{post_id}',[ FrontendController::class, 'postReadCount'])->name('post-count');
 
 // Backend -Dashboard
 Route::group(["prefix" => "dashboard", "middleware" => "auth"], function (){
