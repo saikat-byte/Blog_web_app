@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CategoryListResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -114,5 +115,12 @@ class CategoryController extends Controller
     {
             $category->delete();
             return Redirect()->back()->with('success', 'Category deletecd successfully');
+    }
+
+
+    // Api create
+    public function categoryList(){
+        $categories = Category::latest()->get();
+        return CategoryListResource::collection($categories);
     }
 }

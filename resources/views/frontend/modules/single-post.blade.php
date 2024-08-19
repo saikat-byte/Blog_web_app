@@ -39,10 +39,11 @@
                                         <h4>{{ $posts->title }}</h4>
                                     </a>
                                     <ul class="post-info">
-                                        <li><a href="#">{{ $posts->user?->name }}</a></li>
+                                        <li><a href="#" >{{ $posts->user?->name }}</a></li>
                                         <li><a href="#">{{ \Carbon\Carbon::parse($posts->created_at)->format('M-d-Y')
                                                 }}</a></li>
-                                        <li><a href="#">10 Comments</a></li>
+                                        <li><a href="#">{{ $posts->comment?->count() }} Comments</a></li>
+                                        <li><a href="#">{{ $posts->post_read_count?->count }} Read</a></li>
                                     </ul>
                                     <div class="post-description">
                                         <p>
@@ -77,7 +78,7 @@
                         <div class="col-lg-12">
                             <div class="sidebar-item comments">
                                 <div class="sidebar-heading">
-                                    <h2>4 comments</h2>
+                                    <h2>{{ $posts->comment->count() }} comments</h2>
                                 </div>
                                 <div class="content">
                                     <ul>
@@ -87,7 +88,7 @@
                                                 <img src="{{asset('frontend/assets/images/comment-author-01.jpg')}}" alt="">
                                             </div>
                                             <div class="right-content">
-                                                <h4>{{ $comment->user?->name }}<span>{{ \Carbon\Carbon::parse($comment->created_at)->format('M-d-Y') }}</span></h4>
+                                                <h4 class="text-capitalize">{{ $comment->user?->name }}<span>{{ \Carbon\Carbon::parse($comment->created_at)->format('M-d-Y') }}</span></h4>
                                                 <p>{{ $comment->comment }}</p>
                                                 <h4 class="mt-3">Write reply</h4>
                                                 <form action="{{ route('comment.store') }}" method="POST">

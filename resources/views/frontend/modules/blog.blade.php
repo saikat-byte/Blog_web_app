@@ -51,7 +51,7 @@
                         <ul class="post-info mb-3">
                           <li><a href="#">{{  $post->user->name }}</a></li>
                           <li><a href="#">{{ \Carbon\Carbon::parse($post->created_at)->format('M-d-Y') }}</a></li>
-                          <li><a href="#">12 Comments</a></li>
+                          <li><a href="#">{{ $post->post_read_count?->count }} Read</a></li>
                         </ul>
                         <a href="{{ route('frontend.single', $post->slug) }}"> <button class="btn btn-primary btn-sm read-more-btn">Readmore</button> </a>
                       </div>

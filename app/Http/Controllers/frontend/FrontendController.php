@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\PostCountController;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\PostCount;
 use App\Models\SubCategory;
 use App\Models\Tag;
 use Illuminate\Http\Request;
@@ -17,7 +18,6 @@ use function Laravel\Prompts\select;
 class FrontendController extends Controller
 {
     public function index(){
-
         $query = Post::with('category', 'tag', 'user', 'subCategory')->where('is_approved', 1)->where('status', 1);
         $posts = $query->latest()->take(5)->get();
         $slider_posts = $query->inRandomOrder()->take(5)->get();
@@ -26,7 +26,7 @@ class FrontendController extends Controller
 
     public function all_post(){
 
-        $posts = Post::with('category', 'tag', 'user', 'subCategory')->where('is_approved', 1)->where('status', 1)->latest()->paginate(10);
+        $posts = Post::with('category', 'tag', 'user', 'subCategory', 'post_read_count')->where('is_approved', 1)->where('status', 1)->latest()->paginate(10);
         $title = "View all post";
         $sub_title = "Blog post";
         return \view('frontend.modules.blog', \compact('posts', 'title', 'sub_title'));
@@ -39,7 +39,7 @@ class FrontendController extends Controller
         ->where('status', 1)
         ->where('title', 'like', '%' . $request->input('search'))
         ->latest()
-        ->paginate(3);
+        ->paginate(15);
 
         $title = "View Search Result";
         $sub_title = $request->input('search');
@@ -103,7 +103,7 @@ class FrontendController extends Controller
 
 
   final public function single(string $slug){
-        $posts = Post::with('category', 'tag', 'user', 'subCategory', 'comment', 'comment.user')
+        $posts = Post::with('category', 'tag', 'user', 'subCategory', 'comment', 'comment.user', 'post_read_count')
         ->where('is_approved', 1)
         ->where('status', 1)
         ->where('slug', $slug)
@@ -113,14 +113,20 @@ class FrontendController extends Controller
         return \view('frontend.modules.single-post', \compact('posts', 'post_title', 'sub_title'));
     }
 
+
+
     final public function postReadCount($post_id){
 
         (new PostCountController($post_id))->postReadCount();
     }
 
+
+
    final public function contact_us(){
 
         return view('frontend.modules.contact');
     }
+
+
 
 }

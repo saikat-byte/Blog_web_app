@@ -172,4 +172,5 @@ class PostController extends Controller
         $post->delete();
         return Redirect()->back()->with('success', 'Post deletecd successfully');
     }
+
 }
